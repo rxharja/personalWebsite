@@ -6,8 +6,8 @@ from django.db import models
 class Article(models.Model):
 
     title = models.CharField(max_length=120)
-    description = models.CharField(max_length=250)
-    image = models.ImageField()
+    description = models.CharField(max_length=250, null=True, blank=True)
+    image = models.ImageField(null=True, blank=True)
     content = models.TextField()
 
     def __str__(self):
