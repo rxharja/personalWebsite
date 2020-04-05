@@ -63,8 +63,9 @@ export const authLogin = (username, password) => {
 }
 
 export const authSignup = (username, email, password1, password2) => {
+  console.log("username",username,"email",email,"password1",password1,"password2",password2);
   return dispatch => {
-    const urlToRender = 'https://127.0.0.1:8000/';
+    const urlToRender = 'http://127.0.0.1:8000/';
     const authLog = 'rest-auth/registration/';
     const toPost = urlToRender + authLog;
     dispatch(authStart());

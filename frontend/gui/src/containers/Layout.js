@@ -43,7 +43,7 @@ class CustomLayout extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch, event) => {
   return {
     logout: () => dispatch(actions.logout())
   }
