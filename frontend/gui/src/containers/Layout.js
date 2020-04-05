@@ -25,9 +25,15 @@ class CustomLayout extends React.Component {
   render() {
     return (
       <Layout style={{ minHeight: '100vh' }}>
-        <Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
+          <Sider
+            collapsible
+            breakpoint="lg"
+            collapsedWidth="0"
+            collapsed={this.state.collapsed}
+            onCollapse={this.onCollapse}
+          >
           <div className="logo" />
-          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+          <Menu theme="dark" defaultSelectedKeys={['2']} mode="inline">
             {
               this.props.isAuthenticated ?
 
@@ -65,19 +71,33 @@ class CustomLayout extends React.Component {
           </Menu>
         </Sider>
         <Layout>
-
-          <Content style={{ margin: '0 16px' }}>
-            <TopHeader
-            location = {this.props.location}
-            history = {this.props.history}
-            style={{ background: '#fff', padding: 0 }} />
-            <Breadcrumb style={{ margin: '16px 0' }}>
-              <Breadcrumb.Item>User</Breadcrumb.Item>
-              <Breadcrumb.Item>{this.props.username}</Breadcrumb.Item>
-            </Breadcrumb>
-            <div style={{ padding: 24, background: '#fff', minHeight: 360 }}>{this.props.children}</div>
-          </Content>
-          <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+          {
+            this.props.history.location.pathname === '/' ?
+              <Content style={{ margin: '0', height: window.innerHeight }}>
+                <div isAuthenticated = {this.props.isAuthenticated}
+                style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+                {this.props.children}
+                </div>
+              </Content>
+              :
+              <div>
+              <Content style={{ margin: '0 16px'}}>
+                <TopHeader
+                location = {this.props.location}
+                history = {this.props.history}
+                style={{ background: '#fff', padding: 0 }} />
+                <Breadcrumb style={{ margin: '16px 0' }}>
+                  <Breadcrumb.Item>User</Breadcrumb.Item>
+                  <Breadcrumb.Item>{this.props.username}</Breadcrumb.Item>
+                </Breadcrumb>
+                <div isAuthenticated = {this.props.isAuthenticated}
+                style={{ padding: 24, background: '#fff', minHeight: 360 }}>
+                {this.props.children}
+                </div>
+              </Content>
+            <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
+              </div>
+          }
         </Layout>
       </Layout>
     );

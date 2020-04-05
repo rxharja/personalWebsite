@@ -34,7 +34,7 @@ const Articles = (props) => {
           <img
             width={272}
             alt="logo"
-            src={item.image}
+            src={"/static/" + item.image}
           />
         }
       >

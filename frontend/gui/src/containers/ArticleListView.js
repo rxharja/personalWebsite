@@ -13,6 +13,7 @@ class ArticleList extends React.Component {
   }
 
   componentDidMount() {
+    console.log("in articellist", this.props)
     axios.get(url_to_render)
       .then(res => {
           this.setState({
@@ -25,12 +26,19 @@ class ArticleList extends React.Component {
     return (
       <div>
         <Articles data={this.state.articles} />
-        <br />
-        <h2>Create an article</h2>
-        <CustomForm
-          requestMethod="post"
-          articleID={null}
-          btnText="Create" />
+        {
+          !this.props.isAuthenticated ?
+          <div>
+          <br />
+          <h2>Create an article</h2>
+          <CustomForm
+            requestMethod="post"
+            articleID={null}
+            btnText="Create" />
+          </div>
+          :
+          <br />
+        }
       </div>
     );
   }

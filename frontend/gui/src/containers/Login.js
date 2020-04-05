@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Input, Button, Spin } from 'antd';
 import { UserOutlined, LoadingOutlined, LockOutlined } from '@ant-design/icons';
 import { connect } from 'react-redux';
-import { NavLink, withRouter } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import * as actions from '../store/actions/auth';
 
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
@@ -96,4 +96,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WrappedNormalLoginForm));
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedNormalLoginForm);
