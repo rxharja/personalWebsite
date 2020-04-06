@@ -1,5 +1,5 @@
 import {PtsCanvas } from 'react-pts-canvas'
-import { Create } from 'pts/dist/es5'
+import { Create, Group, Line } from 'pts/dist/es5'
 
 
 class CanvasComponent extends PtsCanvas {
@@ -7,13 +7,11 @@ class CanvasComponent extends PtsCanvas {
 
     constructor() {
       super();
-      this.noiseGrid = [];
+      this.pts = new Group();
     }
 
     _create() {
-      // Create a line and a grid, and convert them to `Noise` points
-      let gd = Create.gridPts( this.space.innerBound, 20, 20 );
-      this.noiseGrid = Create.noisePts( gd, 0.05, 0.1, 20, 20 );
+      this.pts = Create.distributeRandom( this.space.innerBound, 200 );
     }
 
     componentDidUpdate() {
@@ -26,7 +24,7 @@ class CanvasComponent extends PtsCanvas {
 
 
     // Override PtsCanvas' start function
-    start(space, bound) {
+    start(bound) {
       this._create();
     }
 
@@ -39,19 +37,19 @@ class CanvasComponent extends PtsCanvas {
 
     // Override PtsCanvas' animate function
     animate(time, ftime) {
+      let perpend = new Group( this.space.center.$subtract(0.1), this.space.pointer ).op( Line.perpendicularFromPt );
+      this.pts.rotate2D( 0.0005, this.space.center );
 
-      if (!this.noiseGrid) return;
-
-      // Use pointer position to change speed
-      let speed = this.space.pointer.$subtract( this.space.center ).divide( this.space.center ).abs();
-
-      // Generate noise in a grid
-      this.noiseGrid.forEach( (p) => {
-        p.step( 0.01*(1-speed.x), 0.01*(1-speed.y) );
-        this.form.fillOnly("#fff").point( p, Math.abs( p.noise2D() * this.space.size.x/18 ), "circle" );
+      this.pts.forEach( (p, i) => {
+        // for each point, find the perpendicular to the line
+        let lp = perpend( p );
+        var ratio = Math.min( 1, 1 - lp.$subtract(p).magnitude()/(this.space.size.x/2) );
+        this.form.stroke(`rgba(255,255,255,${ratio}`, ratio*2).line( [ p, lp ] );
+        this.form.fillOnly( ["#f03", "#09f", "#0c6"][i%3] ).point( p, 1 );
       });
-
+      
     }
+
 }
 
 export default CanvasComponent;

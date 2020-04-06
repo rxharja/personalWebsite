@@ -90,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
     }),
     width: theme.spacing(7),
     [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(9),
+      width: 0,
     },
   },
   appBarSpacer: theme.mixins.toolbar,
@@ -100,8 +100,9 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'auto',
   },
   container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
+    paddingTop: 0,
+    paddingBottom: 0,
+    paddingLeft: 0
   },
   paper: {
     padding: theme.spacing(2),
@@ -129,22 +130,36 @@ const CustomLayout = (props) => {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
-        <Toolbar className={classes.toolbar}>
+        {
+          props.history.location.pathname === '/' ?
           <IconButton
             edge="start"
             color="inherit"
+            style={{height:"10px", marginLeft: "10px", border: "none"}}
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
           >
             <MenuIcon />
           </IconButton>
-          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            Dashboard
-          </Typography>
-        </Toolbar>
-      </AppBar>
+          :
+          <AppBar position="absolute" style={{background: "gray"}}className={clsx(classes.appBar, open && classes.appBarShift)}>
+          <Toolbar className={classes.toolbar}>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+              Dashboard
+            </Typography>
+          </Toolbar>
+          </AppBar>
+        }
       <Drawer
         variant="permanent"
         classes={{
@@ -165,9 +180,20 @@ const CustomLayout = (props) => {
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
           {props.children}
-          <Box pt={4}>
-            <Copyright />
-          </Box>
+
+          {
+            props.history.location.pathname !== "/" ?
+
+            <Box pt={4}>
+              <Copyright />
+            </Box>
+
+          :
+
+            console.log("")
+
+          }
+
         </Container>
       </main>
     </div>

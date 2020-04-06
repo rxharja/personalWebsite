@@ -20,10 +20,6 @@
     font-size: 4em;
 }
 
-.label h1 {
-  color: #fff;
-}
-
-.label h2 {
+.label h1, .label h2 {
   color: #fff;
 }
