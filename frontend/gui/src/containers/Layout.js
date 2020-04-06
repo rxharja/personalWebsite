@@ -1,107 +1,177 @@
 import React from 'react';
-import { Layout, Menu, Breadcrumb, Icon } from 'antd';
+import clsx from 'clsx';
+import { makeStyles } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Drawer from '@material-ui/core/Drawer';
+import Box from '@material-ui/core/Box';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import List from '@material-ui/core/List';
+import Typography from '@material-ui/core/Typography';
+import Divider from '@material-ui/core/Divider';
+import IconButton from '@material-ui/core/IconButton';
+import Container from '@material-ui/core/Container';
+import Link from '@material-ui/core/Link';
+import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ListItems from '../components/ListItems';
 import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import * as actions from '../store/actions/auth';
-import TopHeader from '../components/TopHeader'
 
-const { Content, Footer, Sider } = Layout;
-const { SubMenu } = Menu;
 
-class CustomLayout extends React.Component {
-  state = {
-    collapsed: false,
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://material-ui.com/">
+        Redon Xharja
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
+const drawerWidth = 240;
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+  },
+  toolbar: {
+    paddingRight: 24, // keep right padding when drawer closed
+  },
+  toolbarIcon: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: '0 8px',
+    ...theme.mixins.toolbar,
+  },
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    marginLeft: drawerWidth,
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(['width', 'margin'], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  menuButton: {
+    marginRight: 36,
+  },
+  menuButtonHidden: {
+    display: 'none',
+  },
+  title: {
+    flexGrow: 1,
+  },
+  drawerPaper: {
+    position: 'relative',
+    whiteSpace: 'nowrap',
+    width: drawerWidth,
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  drawerPaperClose: {
+    overflowX: 'hidden',
+    transition: theme.transitions.create('width', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    width: theme.spacing(7),
+    [theme.breakpoints.up('sm')]: {
+      width: theme.spacing(9),
+    },
+  },
+  appBarSpacer: theme.mixins.toolbar,
+  content: {
+    flexGrow: 1,
+    height: '100vh',
+    overflow: 'auto',
+  },
+  container: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+  },
+  paper: {
+    padding: theme.spacing(2),
+    display: 'flex',
+    overflow: 'auto',
+    flexDirection: 'column',
+  },
+  fixedHeight: {
+    height: 240,
+  },
+}));
+
+
+// class CustomLayout extends React.Component {
+const CustomLayout = (props) => {
+  const classes = useStyles();
+  const [open, setOpen] = React.useState(true);
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+  const handleDrawerClose = () => {
+    setOpen(false);
   };
 
-  componentDidMount() {
-    console.log(this.props);
-  }
-
-  onCollapse = collapsed => {
-    console.log(collapsed);
-    this.setState({ collapsed });
-  };
-
-  render() {
-    return (
-      <Layout style={{ minHeight: '100vh' }}>
-          <Sider
-            collapsible
-            breakpoint="lg"
-            collapsedWidth="0"
-            collapsed={this.state.collapsed}
-            onCollapse={this.onCollapse}
+  return (
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
+        <Toolbar className={classes.toolbar}>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
           >
-          <div className="logo" />
-          <Menu theme="dark" defaultSelectedKeys={['2']} mode="inline">
-            {
-              this.props.isAuthenticated ?
-
-              <Menu.Item key="1" onClick={this.props.logout} >
-                <Icon type="logout" />
-                <span>Logout</span>
-              </Menu.Item>
-              :
-              <Menu.Item key="1">
-                <Icon type="login" />
-                <span><Link to="/login">Login</Link></span>
-              </Menu.Item>
-            }
-            <Menu.Item key="2">
-              <Icon type="home" />
-              <span><Link to="/">Home</Link></span>
-            </Menu.Item>
-            <SubMenu
-              key="sub1"
-              title={
-                <span>
-                  <Icon type="fire" />
-                  <span>About</span>
-                </span>
-              }
-            >
-              <Menu.Item key="3">Who I am</Menu.Item>
-              <Menu.Item key="4">Projects</Menu.Item>
-              <Menu.Item key="5">Resume</Menu.Item>
-            </SubMenu>
-            <Menu.Item key="6">
-              <Icon type="smile" />
-              <span><Link to="/articles">Blog</Link></span>
-            </Menu.Item>
-          </Menu>
-        </Sider>
-        <Layout>
-          {
-            this.props.history.location.pathname === '/' ?
-              <Content style={{ margin: '0', height: window.innerHeight }}>
-                <div isAuthenticated = {this.props.isAuthenticated}
-                style={{ padding: 24, background: '#fff', minHeight: 360 }}>
-                {this.props.children}
-                </div>
-              </Content>
-              :
-              <div>
-              <Content style={{ margin: '0 16px'}}>
-                <TopHeader
-                location = {this.props.location}
-                history = {this.props.history}
-                style={{ background: '#fff', padding: 0 }} />
-                <Breadcrumb style={{ margin: '16px 0' }}>
-                  <Breadcrumb.Item>User</Breadcrumb.Item>
-                  <Breadcrumb.Item>{this.props.username}</Breadcrumb.Item>
-                </Breadcrumb>
-                <div isAuthenticated = {this.props.isAuthenticated}
-                style={{ padding: 24, background: '#fff', minHeight: 360 }}>
-                {this.props.children}
-                </div>
-              </Content>
-            <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>
-              </div>
-          }
-        </Layout>
-      </Layout>
-    );
-  }
+            <MenuIcon />
+          </IconButton>
+          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+            Dashboard
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        variant="permanent"
+        classes={{
+          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+        }}
+        open={open}
+      >
+        <div className={classes.toolbarIcon}>
+          <IconButton onClick={handleDrawerClose}>
+            <ChevronLeftIcon />
+          </IconButton>
+        </div>
+        <Divider />
+        <List><ListItems {...props}/></List>
+        <Divider />
+      </Drawer>
+      <main className={classes.content}>
+        <div className={classes.appBarSpacer} />
+        <Container maxWidth="lg" className={classes.container}>
+          {props.children}
+          <Box pt={4}>
+            <Copyright />
+          </Box>
+        </Container>
+      </main>
+    </div>
+  );
 }
 
 const mapDispatchToProps = (dispatch, event) => {
@@ -110,6 +180,4 @@ const mapDispatchToProps = (dispatch, event) => {
   }
 }
 
-export default withRouter(connect(null, mapDispatchToProps)(CustomLayout));
-
-//           <TopHeader style={{ background: '#fff', padding: 0 }} />
+export default withRouter(connect(null, mapDispatchToProps)(CustomLayout))

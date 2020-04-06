@@ -1,87 +1,148 @@
 import React from 'react';
-import { Form, Input, Button, Spin } from 'antd';
-import { UserOutlined, LoadingOutlined, LockOutlined } from '@ant-design/icons';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Link from '@material-ui/core/Link'
+import TextField from '@material-ui/core/TextField';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Grid from '@material-ui/core/Grid';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import { ValidatorForm, TextValidator} from 'react-material-ui-form-validator';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import * as actions from '../store/actions/auth';
 
-const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
 
-class NormalLoginForm extends React.Component {
+const NormalLoginForm = (props) => {
 
-  onSubmit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        this.props.onAuth(values.username, values.password);
-        this.props.history.push('/');
-      }
-    });
-
+  let state = {
+      user: {
+          username: '',
+          password: '',
+      },
   };
 
-  render() {
-    const { getFieldDecorator } = this.props.form;
+  const createForm = () => {
+    return (
+      <div><form></form></div>
+    )
+  }
 
-    let errorMessage =null;
 
-    if ( this.props.error ) {
-      errorMessage = (
-        <p>{this.props.error.message}</p>
-      );
+  const handleChange = (event) => {
+    const { user } = state;
+    user[event.target.name] = event.target.value;
+    state.user = user;
+  }
+
+  const handleSubmit = (event) => {
+    if (props.error) {
+      event.preventDefault();
+    } else {
+      const { user } = state
+      props.onAuth(user.username, user.password);
+      props.history.push('/articles/');
     }
+  }
+
+  const classes = useStyles();
 
     return (
-      <div>
-        {errorMessage}
-        {
-          this.props.loading ?
-          <Spin indicator={antIcon} />
-          :
-          <Form
-            name="normal_login"
-            className="login-form"
-            initialValues={{
-              remember: true,
-            }}
-            onSubmit={this.onSubmit}
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
+          <Avatar className={classes.avatar}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <ValidatorForm
+            ref={createForm}
+            className={classes.form}
+            onSubmit={handleSubmit}
           >
-            <Form.Item name="username">
-              {getFieldDecorator('username', {
-                rules: [{ required: true, message: 'Please input your username!' }],
-              })(
-                <Input
-                  prefix={<UserOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  placeholder="Username"
-                />,
-              )}
-            </Form.Item>
 
-            <Form.Item name="password">
-              {getFieldDecorator('password', {
-                rules: [{ required: true, message: 'Please input your Password!' }],
-              })(
-                <Input
-                  prefix={<LockOutlined style={{ color: 'rgba(0,0,0,.25)' }} />}
-                  type="password"
-                  placeholder="Password"
-                />,
-              )}
-            </Form.Item>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              onChange={handleChange}
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
+              autoFocus
+            />
 
-            <Form.Item>
-              <Button type="primary" htmlType="submit" style={{marginRight: '10px'}}>Login</Button>
-              or
-              <NavLink style={{marginRight: '10px'}} to="/signup/"> signup</NavLink>
-            </Form.Item>
-          </Form>
-        }
-      </div>
+            <TextField
+              autoComplete="current-password"
+              variant="outlined"
+              margin="normal"
+              required
+              fullWidth
+              id="password"
+              label="Password"
+              onChange={handleChange}
+              name="password"
+              type="password"
+              validators={['required']}
+              errorMessages={['this field is required']}
+            />
+
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              htmlType="submit"
+              className={classes.submit}
+            >
+              Sign In
+            </Button>
+
+            <Grid container>
+              <Grid item>
+                <Link href="/signup/" variant="body2">
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
+
+          </ValidatorForm>
+        </div>
+      </Container>
     );
-  };
-}
-
-const WrappedNormalLoginForm = Form.create()(NormalLoginForm)
+  }
 
 const mapStateToProps = (state) => {
   return {
@@ -96,4 +157,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(WrappedNormalLoginForm);
+export default connect(mapStateToProps, mapDispatchToProps)(NormalLoginForm);

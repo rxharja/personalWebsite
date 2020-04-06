@@ -13,9 +13,9 @@ class ArticleList extends React.Component {
   }
 
   componentDidMount() {
-    console.log("in articellist", this.props)
     axios.get(url_to_render)
       .then(res => {
+          console.log(res)
           this.setState({
             articles: res.data
           });
@@ -27,7 +27,7 @@ class ArticleList extends React.Component {
       <div>
         <Articles data={this.state.articles} />
         {
-          !this.props.isAuthenticated ?
+          this.props.isAuthenticated ?
           <div>
           <br />
           <h2>Create an article</h2>
