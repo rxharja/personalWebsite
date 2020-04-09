@@ -44,10 +44,10 @@ class CanvasComponent extends PtsCanvas {
         // for each point, find the perpendicular to the line
         let lp = perpend( p );
         var ratio = Math.min( 1, 1 - lp.$subtract(p).magnitude()/(this.space.size.x/2) );
-        this.form.stroke(`rgba(255,255,255,${ratio}`, ratio*2).line( [ p, lp ] );
+        this.form.stroke(`rgba(0,0,0,${ratio}`, ratio*2).line( [ p, lp ] );
         this.form.fillOnly( ["#f03", "#09f", "#0c6"][i%3] ).point( p, 1 );
       });
-      
+
     }
 
 }

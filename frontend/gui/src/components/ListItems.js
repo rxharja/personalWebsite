@@ -1,24 +1,34 @@
 import React from 'react';
+import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import PeopleIcon from '@material-ui/icons/People';
-import BarChartIcon from '@material-ui/icons/BarChart';
-import LayersIcon from '@material-ui/icons/Layers';
+import HomeIcon from '@material-ui/icons/Home';
+import CenterFocusStrongIcon from '@material-ui/icons/CenterFocusStrong';
+import CenterFocusWeakIcon from '@material-ui/icons/CenterFocusWeak';
+import RecentActorsIcon from '@material-ui/icons/RecentActors';
+import WhatshotIcon from '@material-ui/icons/Whatshot';
+import BookIcon from '@material-ui/icons/Book';
 import { Link } from 'react-router-dom';
 
 const ListItems = (props) => {
   return (
     <div>
-
+      <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center"}}>
+        <h3 style={{color:"#fff"}}>Redon Xharja</h3>
+        <img
+          src="https://unsplash.it/300/300"
+          style={{borderRadius:"100%", width:"90%", margin:"0em 0 1em 0"}}
+          alt="Avatar"
+           />
+      </div>
+    <Divider />
     {
       props.isAuthenticated ?
 
       <ListItem button onClick={props.logout}>
         <ListItemIcon>
-          <DashboardIcon />
+          <CenterFocusWeakIcon />
         </ListItemIcon>
         <ListItemText primary="Logout" />
       </ListItem>
@@ -28,7 +38,7 @@ const ListItems = (props) => {
       <Link to="/login" style={{color: '#fff'}}>
       <ListItem button>
         <ListItemIcon>
-          <DashboardIcon />
+          <CenterFocusStrongIcon />
         </ListItemIcon>
         <ListItemText primary="Login" />
       </ListItem>
@@ -38,7 +48,7 @@ const ListItems = (props) => {
       <Link to="/" style={{color: '#fff'}}>
       <ListItem button>
         <ListItemIcon>
-          <ShoppingCartIcon />
+          <HomeIcon />
         </ListItemIcon>
         <ListItemText primary="Home" />
       </ListItem>
@@ -46,14 +56,14 @@ const ListItems = (props) => {
 
       <ListItem button>
         <ListItemIcon>
-          <PeopleIcon />
+          <RecentActorsIcon />
         </ListItemIcon>
         <ListItemText primary="Resume" />
       </ListItem>
 
       <ListItem button>
         <ListItemIcon>
-          <BarChartIcon />
+          <WhatshotIcon />
         </ListItemIcon>
         <ListItemText primary="Projects" />
       </ListItem>
@@ -61,7 +71,7 @@ const ListItems = (props) => {
       <Link to="/articles" style={{color: '#fff'}}>
         <ListItem button>
           <ListItemIcon>
-            <LayersIcon />
+            <BookIcon />
           </ListItemIcon>
           <ListItemText primary="Blog" />
         </ListItem>

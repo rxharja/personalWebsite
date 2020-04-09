@@ -10,15 +10,12 @@ class Home extends React.Component {
       <div>
         <div className="leftExample">
           <CanvasComponent
-            background="#000"
+            background="#fff"
             name="pts-tester"
             style={{opacity: 0.95}}
             onAction={(space) => {space.bindMouse().bindTouch().play()}}
              />
-          <div className="label">
-            <h1>Redon Xharja</h1>
-            <h2>Full Stack / Bioinformatics</h2>
-          </div>
+
         </div>
       </div>
     );

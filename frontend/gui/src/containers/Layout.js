@@ -18,7 +18,7 @@ import ListItems from '../components/ListItems';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as actions from '../store/actions/auth';
-
+import getPage from '../hooks/get-page';
 
 function Copyright() {
   return (
@@ -55,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
+    color: '#fff'
   },
   appBarShift: {
     marginLeft: drawerWidth,
@@ -90,7 +91,7 @@ const useStyles = makeStyles((theme) => ({
     }),
     width: theme.spacing(7),
     [theme.breakpoints.up('sm')]: {
-      width: 0,
+      width: 0
     },
   },
   appBarSpacer: theme.mixins.toolbar,
@@ -118,6 +119,7 @@ const useStyles = makeStyles((theme) => ({
 
 // class CustomLayout extends React.Component {
 const CustomLayout = (props) => {
+  console.log(window.innerWidth);
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
@@ -127,39 +129,27 @@ const CustomLayout = (props) => {
     setOpen(false);
   };
 
+  const pageSub = getPage(props.history).sub;
+
   return (
     <div className={classes.root}>
       <CssBaseline />
-        {
-          props.history.location.pathname === '/' ?
-          <IconButton
-            edge="start"
-            color="inherit"
-            style={{height:"10px", marginLeft: "10px", border: "none"}}
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-          >
-            <MenuIcon />
-          </IconButton>
-          :
-          <AppBar position="absolute" style={{background: "gray"}}className={clsx(classes.appBar, open && classes.appBarShift)}>
-          <Toolbar className={classes.toolbar}>
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-              Dashboard
-            </Typography>
-          </Toolbar>
-          </AppBar>
-        }
+      <AppBar position="absolute" style={{background: "gray"}}className={clsx(classes.appBar, open && classes.appBarShift)}>
+      <Toolbar className={classes.toolbar}>
+        <IconButton
+          edge="start"
+          color="inherit"
+          aria-label="open drawer"
+          onClick={handleDrawerOpen}
+          className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+            {pageSub}
+        </Typography>
+      </Toolbar>
+      </AppBar>
       <Drawer
         variant="permanent"
         classes={{
@@ -174,27 +164,24 @@ const CustomLayout = (props) => {
         </div>
         <Divider />
         <List><ListItems {...props}/></List>
-        <Divider />
       </Drawer>
       <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
-          {props.children}
-
           {
             props.history.location.pathname !== "/" ?
-
-            <Box pt={4}>
-              <Copyright />
-            </Box>
-
+            <div>
+              <div className={classes.appBarSpacer} />
+              <Container maxWidth="lg" style={{padding:"1em"}} className={classes.container}>
+                {props.children}
+                <Box pt={4}>
+                  <Copyright />
+                </Box>
+              </Container>
+            </div>
           :
-
-            console.log("")
-
+          <Container maxWidth="lg" className={classes.container} style={{padding:0, margin:0}}>
+            {props.children}
+          </Container>
           }
-
-        </Container>
       </main>
     </div>
   );
