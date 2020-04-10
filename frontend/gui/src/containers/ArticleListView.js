@@ -5,12 +5,10 @@ import { withStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
 import WideArticle from '../components/WideArticle';
 import ThinArticle from '../components/ThinArticle';
-import Fab from '@material-ui/core/Fab';
-import Popover from '@material-ui/core/Popover';
-import AddIcon from '@material-ui/icons/Add';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import CustomForm from '../components/Form';
+import AddBlogButton from '../components/buttons/AddBlogButton';
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -45,18 +43,6 @@ class ArticleList extends React.Component {
 
   render(){
     const { classes } = this.props;
-
-    const handlePopoverOpen = (event) => {
-      console.log("open",this.state,event.currentTarget);
-      this.setState({anchorEl: event.currentTarget});
-    };
-
-    const handlePopoverClose = () => {
-      console.log("close",this.state);
-      this.setState({anchorEl:null});
-    };
-
-    const open = Boolean(this.state.anchorEl);
 
     const articles = []
     this.state.articles.forEach(article => {articles.push(article)});
@@ -109,37 +95,7 @@ class ArticleList extends React.Component {
             ))}
           </Grid>
         </Grid>
-        <Fab
-          color="primary"
-          aria-label="add"
-          style={{position:"absolute",bottom:"20px",right:"20px"}}
-          aria-owns={open ? 'mouse-over-popover' : undefined}
-          aria-haspopup="true"
-          onMouseEnter={handlePopoverOpen}
-          onMouseLeave={handlePopoverClose}>
-          <AddIcon />
-        </Fab>
-        <Popover
-          id="mouse-over-popover"
-          className={classes.popover}
-          classes={{
-            paper: classes.paper,
-          }}
-          open={open}
-          anchorEl={this.state.anchorEl}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-          }}
-          onClose={handlePopoverClose}
-          disableRestoreFocus
-        >
-          <Typography>Add a new blog post!</Typography>
-        </Popover>
+        <AddBlogButton />
         <CustomForm
           requestMethod="post"
           articleID={null}

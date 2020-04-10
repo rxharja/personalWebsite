@@ -14,11 +14,6 @@ const styles = theme => ({
   },
 });
 
-let open = false
-
-const successfulPost = () => {
-  open = true;
-}
 
 class CustomForm extends React.Component {
 
@@ -54,7 +49,6 @@ class CustomForm extends React.Component {
     return (
       <div className="root">
         <form className="root"
-          onSuccess={successfulPost()}
           onSubmit={(event) => this.handleFormSubmit(
           event,
           this.props.requestMethod,

@@ -15,14 +15,10 @@ import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ListItems from '../components/ListItems';
+import Socialmediaicons from '../components/SocialMediaIcons';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as actions from '../store/actions/auth';
-import GitHubIcon from '@material-ui/icons/GitHub';
-import FacebookIcon from '@material-ui/icons/Facebook';
-import TwitterIcon from '@material-ui/icons/Twitter';
-import LinkedInIcon from '@material-ui/icons/LinkedIn';
-import InstagramIcon from '@material-ui/icons/Instagram';
 import getPage from '../hooks/get-page';
 
 function Copyright() {
@@ -153,36 +149,7 @@ const CustomLayout = (props) => {
         <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             {pageSub}
         </Typography>
-        <div id="socialmedia">
-          <IconButton
-            color="inherit"
-            aria-label=""
-            style={{width:"50px",height:"50px"}}
-          >
-            <a href="https://github.com/rxharja"><GitHubIcon /></a>
-          </IconButton>
-          <IconButton
-            color="inherit"
-            aria-label=""
-            style={{width:"50px",height:"50px"}}
-          >
-            <a href="https://instagram.com"><InstagramIcon /></a>
-          </IconButton>
-          <IconButton
-            color="inherit"
-            aria-label=""
-            style={{width:"50px",height:"50px"}}
-          >
-            <a href="https://linkedin.com"><LinkedInIcon /></a>
-          </IconButton>
-          <IconButton
-            color="inherit"
-            aria-label=""
-            style={{width:"50px",height:"50px"}}
-          >
-            <a href="https://facebook.com"><FacebookIcon /></a>
-          </IconButton>
-        </div>
+        <Socialmediaicons />
       </Toolbar>
       </AppBar>
       <Drawer

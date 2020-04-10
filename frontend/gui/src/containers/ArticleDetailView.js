@@ -4,6 +4,7 @@ import CustomForm from '../components/Form';
 import Button from '@material-ui/core/Button';
 import CustomizedSnackbar from '../components/CustomizedSnackbar';
 import Divider from '@material-ui/core/Divider';
+import AddBlogButton from '../components/buttons/AddBlogButton';
 
 class ArticleDetail extends React.Component {
 
@@ -64,6 +65,7 @@ class ArticleDetail extends React.Component {
           <Button variant="outlined" color="secondary" type="submit" >Delete</Button>
         </form>
         <CustomizedSnackbar />
+        <AddBlogButton />
       </div>
     );
   }
