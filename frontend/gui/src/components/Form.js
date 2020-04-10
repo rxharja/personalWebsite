@@ -50,7 +50,7 @@ class CustomForm extends React.Component {
 
   render() {
     const { classes } = this.props;
-
+    console.log(this.props);
     return (
       <div className="root">
         <form className="root"
@@ -66,6 +66,7 @@ class CustomForm extends React.Component {
             label="Title"
             color="secondary"
             autoComplete="off"
+            defaultValue={this.props.title ? this.props.title : ""}
             required
             fullWidth
           />
@@ -75,6 +76,7 @@ class CustomForm extends React.Component {
             label="Content"
             className="field"
             autoComplete="off"
+            defaultValue={this.props.content ? this.props.content : ""}
             multiline
             required
             fullWidth

@@ -3,6 +3,7 @@ import axios from 'axios';
 import CustomForm from '../components/Form';
 import Button from '@material-ui/core/Button';
 import CustomizedSnackbar from '../components/CustomizedSnackbar';
+import Divider from '@material-ui/core/Divider';
 
 class ArticleDetail extends React.Component {
 
@@ -41,14 +42,19 @@ class ArticleDetail extends React.Component {
   }
 
   render() {
+
     return (
-      <div>
+      <div style={{padding:"0 15% 0 15%"}}>
         <div title={this.state.article.title}>
           <h1>{this.state.article.title}</h1>
+          <i>Redon Xharja, published: {new Date().getDate()}</i>
+          <Divider />
+          <br />
           <p>{this.state.article.description}</p>
-          <p>{this.state.article.content}</p>
+          <div dangerouslySetInnerHTML={{ __html: this.state.article.content }} />
         </div>
         <CustomForm
+          {...this.state.article}
           requestMethod="put"
           articleTitle={this.state.article.title}
           articleContent={this.state.article.content}
