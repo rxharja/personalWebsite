@@ -42,7 +42,7 @@ export default function Socialmediaicons() {
         onMouseLeave={handlePopoverClose}
         style={{width:"50px",height:"50px"}}
       >
-        <a style={{color:"#fff"}} href="https://github.com/rxharja"><GitHubIcon /></a>
+        <a style={{color:"inherit"}} href="https://github.com/rxharja"><GitHubIcon /></a>
       </IconButton>
       <Popover
         id="mouse-over-popover"

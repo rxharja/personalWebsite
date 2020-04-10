@@ -41,7 +41,7 @@ export default function Socialmediaicons() {
         onMouseLeave={handlePopoverClose}
         style={{width:"50px",height:"50px"}}
       >
-        <a style={{color:"#fff"}} href="https://twitter.com/Red44870056"><TwitterIcon /></a>
+        <a style={{color:"inherit"}} href="https://twitter.com/Red44870056"><TwitterIcon /></a>
       </IconButton>
       <Popover
         id="mouse-over-popover"

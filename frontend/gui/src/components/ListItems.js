@@ -8,6 +8,7 @@ import CenterFocusStrongIcon from '@material-ui/icons/CenterFocusStrong';
 import CenterFocusWeakIcon from '@material-ui/icons/CenterFocusWeak';
 import RecentActorsIcon from '@material-ui/icons/RecentActors';
 import WhatshotIcon from '@material-ui/icons/Whatshot';
+import Typography from '@material-ui/core/Typography';
 import BookIcon from '@material-ui/icons/Book';
 import { Link } from 'react-router-dom';
 
@@ -15,7 +16,9 @@ const ListItems = (props) => {
   return (
     <div>
       <div style={{width:"100%",display:"flex",flexDirection:"column",alignItems:"center"}}>
-        <h3 style={{color:"#fff"}}>Redon Xharja</h3>
+        {
+          window.innerWidth > 700 ? <Typography>Redon Xharja</Typography> : ""
+        }
         <img
           src="https://unsplash.it/300/300"
           style={{borderRadius:"100%", width:"90%", margin:"0em 0 1em 0"}}
@@ -35,7 +38,7 @@ const ListItems = (props) => {
 
       :
 
-      <Link to="/login" style={{color: '#fff'}}>
+      <Link to="/login" style={{color: 'inherit',textDecoration:'none'}}>
       <ListItem button>
         <ListItemIcon>
           <CenterFocusStrongIcon />
@@ -45,7 +48,7 @@ const ListItems = (props) => {
       </Link>
     }
 
-      <Link to="/" style={{color: '#fff'}}>
+      <Link to="/" style={{color: 'inherit', textDecoration:'none'}}>
       <ListItem button>
         <ListItemIcon>
           <HomeIcon />
@@ -68,7 +71,7 @@ const ListItems = (props) => {
         <ListItemText primary="Projects" />
       </ListItem>
 
-      <Link to="/articles" style={{color: '#fff'}}>
+      <Link to="/articles" style={{color: 'inherit', textDecoration:'none'}}>
         <ListItem button>
           <ListItemIcon>
             <BookIcon />

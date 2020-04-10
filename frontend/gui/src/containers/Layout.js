@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import Box from '@material-ui/core/Box';
@@ -20,6 +20,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import * as actions from '../store/actions/auth';
 import getPage from '../hooks/get-page';
+import SettingsBrightnessIcon from '@material-ui/icons/SettingsBrightness';
 
 function Copyright() {
   return (
@@ -122,70 +123,89 @@ const useStyles = makeStyles((theme) => ({
 const CustomLayout = (props) => {
   console.log(window.innerWidth);
   const classes = useStyles();
+
   const [open, setOpen] = React.useState(true);
+  const [currentTheme, setCurrentTheme] = React.useState('dark');
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
+
   const handleDrawerClose = () => {
     setOpen(false);
   };
 
+  let pageTheme = createMuiTheme({
+    palette: {
+      type: currentTheme,
+    },
+  });
+
+  const handleThemeChange = () => {
+    currentTheme === 'dark' ? setCurrentTheme('light') : setCurrentTheme('dark')
+  }
+
   const pageSub = getPage(props.history).sub;
 
   return (
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar position="absolute" style={{background: "secondary"}}className={clsx(classes.appBar, open && classes.appBarShift)}>
-      <Toolbar className={classes.toolbar}>
-        <IconButton
-          edge="start"
-          color="inherit"
-          aria-label="open drawer"
-          onClick={handleDrawerOpen}
-          className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-        >
-          <MenuIcon />
-        </IconButton>
-        <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            {pageSub}
-        </Typography>
-        <Socialmediaicons />
-      </Toolbar>
-      </AppBar>
-      <Drawer
-        variant="permanent"
-        classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-        }}
-        open={open}
-      >
-        <div className={classes.toolbarIcon}>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronLeftIcon />
+    <ThemeProvider theme={pageTheme}>
+      <div className={classes.root}>
+        <CssBaseline />
+        <AppBar position="absolute" style={{background: "secondary"}}className={clsx(classes.appBar, open && classes.appBarShift)}>
+        <Toolbar className={classes.toolbar}>
+          <IconButton
+            edge="start"
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+          >
+            <MenuIcon />
           </IconButton>
-        </div>
-        <Divider />
-        <List><ListItems {...props}/></List>
-      </Drawer>
-      <main className={classes.content}>
-          {
-            props.history.location.pathname !== "/" ?
-            <div>
-              <div className={classes.appBarSpacer} />
-              <Container maxWidth="lg" style={{padding:"1em"}} className={classes.container}>
-                {props.children}
-                <Box pt={4}>
-                  <Copyright />
-                </Box>
-              </Container>
-            </div>
-          :
-          <Container maxWidth="lg" className={classes.container} style={{padding:0, margin:0}}>
-            {props.children}
-          </Container>
-          }
-      </main>
-    </div>
+          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+              {pageSub}
+          </Typography>
+          <IconButton onClick={handleThemeChange}>
+            <SettingsBrightnessIcon style={{color:"#fff"}}/>
+          </IconButton>
+          <Socialmediaicons />
+        </Toolbar>
+        </AppBar>
+        <Drawer
+          variant="permanent"
+          classes={{
+            paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+          }}
+          open={open}
+        >
+          <div className={classes.toolbarIcon}>
+            <IconButton onClick={handleDrawerClose}>
+              <ChevronLeftIcon />
+            </IconButton>
+          </div>
+          <Divider />
+          <List><ListItems {...props}/></List>
+        </Drawer>
+        <main className={classes.content}>
+            {
+              props.history.location.pathname !== "/" ?
+              <div>
+                <div className={classes.appBarSpacer} />
+                <Container maxWidth="lg" style={{padding:"1em"}} className={classes.container}>
+                  {props.children}
+                  <Box pt={4}>
+                    <Copyright />
+                  </Box>
+                </Container>
+              </div>
+            :
+            <Container maxWidth="lg" className={classes.container} style={{padding:0, margin:0}}>
+              {props.children}
+            </Container>
+            }
+        </main>
+      </div>
+    </ThemeProvider>
   );
 }
 

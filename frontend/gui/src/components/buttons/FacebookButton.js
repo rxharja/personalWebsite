@@ -41,7 +41,7 @@ export default function Socialmediaicons() {
         onMouseLeave={handlePopoverClose}
         style={{width:"50px",height:"50px"}}
       >
-        <a style={{color:"#fff"}} href="https://www.facebook.com/redon.xharja"><FacebookIcon /></a>
+        <a style={{color:"inherit"}} href="https://www.facebook.com/redon.xharja"><FacebookIcon /></a>
       </IconButton>
       <Popover
         id="mouse-over-popover"
