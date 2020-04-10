@@ -2,11 +2,13 @@ import React from 'react';
 import axios from 'axios';
 import CustomForm from '../components/Form';
 import Button from '@material-ui/core/Button';
-
+import CustomizedSnackbar from '../components/CustomizedSnackbar';
 
 class ArticleDetail extends React.Component {
+
   state = {
-    article: {}
+    article: {},
+    open: null
   }
 
   componentDidMount() {
@@ -20,7 +22,7 @@ class ArticleDetail extends React.Component {
     axios.get(urlToRender)
       .then(res => {
           this.setState({
-            article: res.data
+            article: res.data,
           });
     })
   }
@@ -47,7 +49,6 @@ class ArticleDetail extends React.Component {
           <p>{this.state.article.content}</p>
         </div>
         <CustomForm
-          onSuccess={this.updateState()}
           requestMethod="put"
           articleTitle={this.state.article.title}
           articleContent={this.state.article.content}
@@ -56,6 +57,7 @@ class ArticleDetail extends React.Component {
         <form onSubmit={this.handleDelete}>
           <Button variant="outlined" color="secondary" type="submit" >Delete</Button>
         </form>
+        <CustomizedSnackbar />
       </div>
     );
   }

@@ -14,10 +14,16 @@ const styles = theme => ({
   },
 });
 
+let open = false
+
+const successfulPost = () => {
+  open = true;
+}
+
 class CustomForm extends React.Component {
 
   handleFormSubmit = (event, requestMethod, articleID) => {
-    event.preventDefault();
+    // event.preventDefault();
     const url_to_render = 'http://127.0.0.1:8000/api/';
     const title = event.target.elements.title.value;
     const content = event.target.elements.content.value;
@@ -48,6 +54,7 @@ class CustomForm extends React.Component {
     return (
       <div className="root">
         <form className="root"
+          onSuccess={successfulPost()}
           onSubmit={(event) => this.handleFormSubmit(
           event,
           this.props.requestMethod,
