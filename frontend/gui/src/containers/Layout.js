@@ -134,7 +134,7 @@ const CustomLayout = (props) => {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <AppBar position="absolute" style={{background: "gray"}}className={clsx(classes.appBar, open && classes.appBarShift)}>
+      <AppBar position="absolute" style={{background: "secondary"}}className={clsx(classes.appBar, open && classes.appBarShift)}>
       <Toolbar className={classes.toolbar}>
         <IconButton
           edge="start"

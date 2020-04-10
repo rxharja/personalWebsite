@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios';
-import CustomForm from '../components/Form';
-import Button from '@material-ui/core/Button';
+import { Button, Card } from 'antd';
 
+import CustomForm from '../components/Form';
 
 class ArticleDetail extends React.Component {
   state = {
@@ -10,10 +10,6 @@ class ArticleDetail extends React.Component {
   }
 
   componentDidMount() {
-    this.updateState();
-  }
-
-  updateState = () => {
     const baseURL = 'http://127.0.0.1:8000/api/';
     const articleID = this.props.match.params.articleID;
     const urlToRender = baseURL + articleID;
@@ -41,20 +37,16 @@ class ArticleDetail extends React.Component {
   render() {
     return (
       <div>
-        <div title={this.state.article.title}>
-          <h1>{this.state.article.title}</h1>
+        <Card title={this.state.article.title}>
           <p>{this.state.article.description}</p>
           <p>{this.state.article.content}</p>
-        </div>
+        </Card>
         <CustomForm
-          onSuccess={this.updateState()}
           requestMethod="put"
-          articleTitle={this.state.article.title}
-          articleContent={this.state.article.content}
           articleID={this.props.match.params.articleID}
           btnText="Update" />
         <form onSubmit={this.handleDelete}>
-          <Button variant="outlined" color="secondary" type="submit" >Delete</Button>
+          <Button type="danger" htmlType="submit" >Delete</Button>
         </form>
       </div>
     );

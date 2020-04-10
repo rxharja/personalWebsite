@@ -1,7 +1,18 @@
 import React from 'react';
-import { Form, Input, Button } from 'antd';
-
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/styles';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import axios from 'axios';
+
+
+const styles = theme => ({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    flexGrow: 1,
+  },
+});
 
 class CustomForm extends React.Component {
 
@@ -10,7 +21,6 @@ class CustomForm extends React.Component {
     const url_to_render = 'http://127.0.0.1:8000/api/';
     const title = event.target.elements.title.value;
     const content = event.target.elements.content.value;
-
     switch ( requestMethod ) {
       case 'post':
         return axios.post(url_to_render, {
@@ -33,25 +43,45 @@ class CustomForm extends React.Component {
   }
 
   render() {
+    const { classes } = this.props;
+
     return (
-      <div>
-        <Form onSubmit={(event) => this.handleFormSubmit(
+      <div className="root">
+        <form className="root"
+          onSubmit={(event) => this.handleFormSubmit(
           event,
           this.props.requestMethod,
           this.props.articleID)}>
-          <Form.Item label="Title">
-            <Input name="title" placeholder="Title goes here" />
-          </Form.Item>
-          <Form.Item label="Content">
-            <Input name="content" placeholder="Content goes here" />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit" >{this.props.btnText}</Button>
-          </Form.Item>
-        </Form>
+          <TextField
+            className="field"
+            id="title"
+            name="title"
+            label="Title"
+            color="secondary"
+            autoComplete="off"
+            required
+            fullWidth
+          />
+          <TextField
+            id="content"
+            name="content"
+            label="Content"
+            className="field"
+            autoComplete="off"
+            multiline
+            required
+            fullWidth
+          />
+          <Button variant="outlined" color="primary" type="submit" >{this.props.btnText}</Button>
+        </form>
       </div>
     );
   };
 }
 
-export default CustomForm;
+CustomForm.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+
+export default withStyles(styles)(CustomForm);

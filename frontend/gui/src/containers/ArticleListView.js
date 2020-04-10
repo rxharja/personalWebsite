@@ -9,7 +9,8 @@ import Fab from '@material-ui/core/Fab';
 import Popover from '@material-ui/core/Popover';
 import AddIcon from '@material-ui/icons/Add';
 import Typography from '@material-ui/core/Typography';
-
+import Divider from '@material-ui/core/Divider';
+import CustomForm from '../components/Form';
 const styles = theme => ({
   root: {
     flexGrow: 1,
@@ -73,7 +74,7 @@ class ArticleList extends React.Component {
                       justifyContent:"center",
                       alignItems:"center"}}
             >
-              <Typography>Blog Posts</Typography>
+              <Typography>Featured Blog Posts</Typography>
             </div>
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -93,6 +94,19 @@ class ArticleList extends React.Component {
           </Grid>
           <Grid item xs={6} sm={3}>
             <ThinArticle {...articles.shift()}/>
+          </Grid>
+          <Grid item xs={12} style={{height:"400px"}}>
+            <Typography>Additional Posts</Typography>
+            <Divider />
+            {this.state.articles.forEach(article => (
+              <div>
+                <img src="https://unsplash.it/150/150" alt=""/>
+                <p>{article.title}</p>
+                <p>{article.content}</p>
+                <p>date created: </p>
+                <p>by:</p>
+              </div>
+            ))}
           </Grid>
         </Grid>
         <Fab
@@ -126,6 +140,10 @@ class ArticleList extends React.Component {
         >
           <Typography>Add a new blog post!</Typography>
         </Popover>
+        <CustomForm
+          requestMethod="post"
+          articleID={null}
+          btnText="Create" />
       </div>
     );
   }
