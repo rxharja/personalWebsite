@@ -11,6 +11,15 @@ const useStyles = makeStyles({
     height: "400px",
     position: "relative"
   },
+  links: {
+    color: "inherit",
+    textDecoration: "none"
+  },
+  actionArea: {
+    position: "absolute",
+    top: "0px",
+    height: "300px"
+  }
 });
 
 const ThinArticle = (props) => {
@@ -18,7 +27,7 @@ const ThinArticle = (props) => {
 
   return (
     <Card className={classes.root}>
-      <a href={"articles/"+props.id}><CardActionArea style={{position:"absolute",top:"0px", height:"300px"}}>
+      <a className={classes.links} href={"articles/"+props.id}><CardActionArea className={classes.actionArea}>
         <CardMedia
           component="img"
           alt={props.description}
@@ -26,8 +35,8 @@ const ThinArticle = (props) => {
           image="https://unsplash.it/400/400"
           title={props.title}
         />
-      <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
+        <CardContent >
+          <Typography color="textPrimary" gutterBottom variant="h5" component="h4">
             {props.title}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">

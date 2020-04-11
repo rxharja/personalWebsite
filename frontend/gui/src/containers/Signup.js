@@ -1,121 +1,215 @@
 import React from 'react';
-import { Form, Input, Icon, Button } from 'antd';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import { withStyles } from '@material-ui/styles';
+import PropTypes from 'prop-types';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Link from '@material-ui/core/Link'
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import LockOpenOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { connect } from 'react-redux';
-import { NavLink, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import * as actions from '../store/actions/auth';
 
-const FormItem = Form.Item;
+const styles = (theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+});
 
 class RegistrationForm extends React.Component {
   state = {
-    confirmDirty: false,
+      user: {
+          username: '',
+          email: '',
+          password: '',
+          confirm: ''
+      },
   };
 
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFieldsAndScroll((err, values) => {
-      if (!err) {
-        this.props.onAuth(
-            values.userName,
-            values.email,
-            values.password,
-            values.confirm
-        );
-        this.props.history.push('/');
-      }
+  componentDidMount() {
+    // custom rule will have name 'isPasswordMatch'
+    ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
+        if (value !== this.state.user.password) {
+            return false;
+        }
+        return true;
     });
   }
 
-  handleConfirmBlur = (e) => {
-    const value = e.target.value;
-    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
-  }
-
-  compareToFirstPassword = (rule, value, callback) => {
-    const form = this.props.form;
-    if (value && value !== form.getFieldValue('password')) {
-      callback('Two passwords that you enter is inconsistent!');
-    } else {
-      callback();
+  componentDidUpdate(prevProps) {
+    if (this.props.loading === false && prevProps.loading === true) {
+      if (!this.props.error) {
+        this.props.history.push('/articles/');
+      }
     }
   }
 
-  validateToNextPassword = (rule, value, callback) => {
-    const form = this.props.form;
-    if (value && this.state.confirmDirty) {
-      form.validateFields(['confirm'], { force: true });
-    }
-    callback();
+  componentWillUnmount() {
+      // remove rule when it is not needed
+      ValidatorForm.removeValidationRule('isPasswordMatch');
   }
 
+  handleChange = (event) => {
+    const { user } = this.state;
+    user[event.target.name] = event.target.value;
+    this.setState({ user });
+  }
+
+  handleSubmit = (event) => {
+    const { user } = this.state
+    this.props.onAuth(user.username,
+                      user.email,
+                      user.password,
+                      user.confirm);
+  }
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { user } = this.state;
+    const { classes } = this.props;
+
+    let open = false;
+    this.props.loading ? open = true : open = false
+
+    let errorMessage = null;
+
+    if ( this.props.error ) {
+      errorMessage = (
+        <p>{this.props.error.message}</p>
+      );
+    }
 
     return (
-      <Form onSubmit={this.handleSubmit}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <div className={classes.paper}>
 
-        <FormItem>
-            {getFieldDecorator('userName', {
-                rules: [{ required: true, message: 'Please input your username!' }],
-            })(
-                <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Username" />
-            )}
-        </FormItem>
+          <Avatar className={classes.avatar}>
+            <LockOpenOutlinedIcon />
+          </Avatar>
 
-        <FormItem>
-          {getFieldDecorator('email', {
-            rules: [{
-              type: 'email', message: 'The input is not valid E-mail!',
-            }, {
-              required: true, message: 'Please input your E-mail!',
-            }],
-          })(
-            <Input prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />
-          )}
-        </FormItem>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <ValidatorForm
+            ref="form"
+            className={classes.form}
+            onSubmit={this.handleSubmit}
+            onError={errors => console.log(errors)}
+          >
 
-        <FormItem>
-          {getFieldDecorator('password', {
-            rules: [{
-              required: true, message: 'Please input your password!',
-            }, {
-              validator: this.validateToNextPassword,
-            }],
-          })(
-            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" />
-          )}
-        </FormItem>
+            <TextValidator
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              onChange={this.handleChange}
+              id="username"
+              label="Username"
+              name="username"
+              value = {user.username}
+              autoComplete="username"
+              validators={['required']}
+              errorMessages={["Can't sign you in with no username"]}
+              autoFocus
+            />
 
-        <FormItem>
-          {getFieldDecorator('confirm', {
-            rules: [{
-              required: true, message: 'Please confirm your password!',
-            }, {
-              validator: this.compareToFirstPassword,
-            }],
-          })(
-            <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} type="password" placeholder="Password" onBlur={this.handleConfirmBlur} />
-          )}
-        </FormItem>
+            <TextValidator
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              onChange={this.handleChange}
+              id="email"
+              label="Email"
+              name="email"
+              value = {user.email}
+              autoComplete="email"
+              validators={['required','isEmail']}
+              errorMessages={['Oops, the email field was left blank!',"Doesn't look like a proper email?"]}
+              autoFocus
+            />
 
-        <FormItem>
-        <Button type="primary" htmlType="submit" style={{marginRight: '10px'}}>
-            Signup
-        </Button>
-        Or
-        <NavLink
-            style={{marginRight: '10px'}}
-            to='/login/'> login
-        </NavLink>
-        </FormItem>
+            <TextField
+              autoComplete="current-password"
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              id="password"
+              label="Password"
+              value = {user.password1}
+              onChange={this.handleChange}
+              name="password"
+              type="password"
+              validators={['required']}
+              errorMessages={['this field is required']}
+            />
 
-      </Form>
+            <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              id="confirm"
+              label="Confirm Password"
+              value = {user.confirm}
+              onChange={this.handleChange}
+              name="confirm"
+              type="password"
+              validators={['isPasswordMatch','required']}
+              errorMessages={["Uh oh, looks like the passwords don't match!",'Make sure to not miss this one!']}
+            />
+
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              htmlType="submit"
+              className={classes.submit}
+            >
+              Sign up
+            </Button>
+
+            <Grid container>
+              <Grid item>
+                <Link href="/login/" variant="body2">
+                  {"Already have an account? Log in"}
+                </Link>
+              </Grid>
+            </Grid>
+
+          </ValidatorForm>
+      </div>
+      {errorMessage}
+      <Backdrop className={classes.backdrop} open={open} >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+    </Container>
     );
   }
 }
 
-const WrappedRegistrationForm = Form.create()(RegistrationForm);
+RegistrationForm.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
 
 const mapStateToProps = (state) => {
     return {
@@ -130,4 +224,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(WrappedRegistrationForm));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(RegistrationForm)));

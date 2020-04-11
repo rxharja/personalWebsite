@@ -121,7 +121,7 @@ const useStyles = makeStyles((theme) => ({
 
 // class CustomLayout extends React.Component {
 const CustomLayout = (props) => {
-  console.log(window.innerWidth);
+
   const classes = useStyles();
 
   const [open, setOpen] = React.useState(true);

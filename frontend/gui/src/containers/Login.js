@@ -9,13 +9,16 @@ import Checkbox from '@material-ui/core/Checkbox';
 import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { ValidatorForm } from 'react-material-ui-form-validator';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/styles';
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { connect } from 'react-redux';
 import * as actions from '../store/actions/auth';
 
-const useStyles = makeStyles((theme) => ({
+const styles = (theme) => ({
   paper: {
     marginTop: theme.spacing(8),
     display: 'flex',
@@ -33,68 +36,89 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
-}));
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
+});
 
-const NormalLoginForm = (props) => {
+class NormalLoginForm extends React.Component {
 
-  let state = {
+
+  state = {
       user: {
           username: '',
           password: '',
       },
   };
 
-  const createForm = () => {
-    return (
-      <div><form></form></div>
-    )
-  }
-
-
-  const handleChange = (event) => {
-    const { user } = state;
-    user[event.target.name] = event.target.value;
-    state.user = user;
-  }
-
-  const handleSubmit = (event) => {
-    if (props.error) {
-      event.preventDefault();
-    } else {
-      const { user } = state
-      props.onAuth(user.username, user.password);
-      props.history.push('/articles/');
+  componentDidUpdate(prevProps) {
+    if (this.props.loading === false && prevProps.loading === true) {
+      if (!this.props.error) {
+        this.props.history.push('/articles/');
+      }
     }
   }
 
-  const classes = useStyles();
+  handleChange = (event) => {
+    const { user } = this.state;
+    this.setState({ user });
+    user[event.target.name] = event.target.value;
+  }
+
+  handleSubmit = (event) => {
+      const { user } = this.state
+      this.props.onAuth(user.username, user.password)
+  }
+
+  render() {
+    let open = false;
+    this.props.loading ? open = true : open = false
+
+    let errorMessage = null;
+
+    if ( this.props.error ) {
+      errorMessage = (
+        <p>{this.props.error.message}</p>
+      );
+    }
+
+    const { classes } = this.props;
+    const { user } = this.state;
 
     return (
+
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
+
           <Avatar className={classes.avatar}>
             <LockOutlinedIcon />
           </Avatar>
+
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+
           <ValidatorForm
-            ref={createForm}
+            ref="form"
             className={classes.form}
-            onSubmit={handleSubmit}
+            onSubmit={this.handleSubmit}
+            onError={errors => console.log("there was a problem",errors)}
           >
 
-            <TextField
+            <TextValidator
               variant="outlined"
               margin="normal"
-              required
               fullWidth
-              onChange={handleChange}
+              onChange={this.handleChange}
               id="username"
               label="Username"
               name="username"
+              value = {user.username}
               autoComplete="username"
+              validators={['required']}
+              errorMessages={["Can't sign you in with no username"]}
               autoFocus
             />
 
@@ -106,7 +130,8 @@ const NormalLoginForm = (props) => {
               fullWidth
               id="password"
               label="Password"
-              onChange={handleChange}
+              value = {user.password}
+              onChange={this.handleChange}
               name="password"
               type="password"
               validators={['required']}
@@ -139,9 +164,19 @@ const NormalLoginForm = (props) => {
 
           </ValidatorForm>
         </div>
+        {errorMessage}
+        <Backdrop className={classes.backdrop} open={open} >
+          <CircularProgress color="inherit" />
+        </Backdrop>
       </Container>
     );
   }
+}
+
+NormalLoginForm.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
 
 const mapStateToProps = (state) => {
   return {
@@ -156,4 +191,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NormalLoginForm);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(NormalLoginForm));

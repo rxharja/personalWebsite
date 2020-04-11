@@ -47,8 +47,8 @@ class CustomForm extends React.Component {
     const { classes } = this.props;
     console.log(this.props);
     return (
-      <div className="root">
-        <form className="root"
+      <div className={classes.root}>
+        <form className={classes.root}
           onSubmit={(event) => this.handleFormSubmit(
           event,
           this.props.requestMethod,

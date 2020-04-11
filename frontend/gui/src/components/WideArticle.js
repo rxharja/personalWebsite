@@ -30,6 +30,10 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     float: "right",
   },
+  links: {
+    textDecoration: "none",
+    color: "inherit"
+  }
 }));
 
 const WideArticle = (props) => {
@@ -38,9 +42,9 @@ const WideArticle = (props) => {
   return (
     <Card className={classes.root}>
         <div className={classes.details}>
-        <a href={"articles/"+props.id}><CardActionArea>
+        <a className={classes.links} href={"articles/"+props.id}><CardActionArea>
           <CardContent className={classes.content}>
-            <Typography component="h5" variant="h5">
+            <Typography color="textPrimary" component="h5" variant="h5">
               {props.title}
             </Typography>
             <Typography variant="subtitle1" color="textSecondary">

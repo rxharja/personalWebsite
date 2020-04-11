@@ -1,7 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
 import WideArticle from '../components/WideArticle';
 import ThinArticle from '../components/ThinArticle';
@@ -9,19 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import CustomForm from '../components/Form';
 import AddBlogButton from '../components/buttons/AddBlogButton';
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-  },
-  paper: {
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-  },
-  popover: {
-    pointerEvents: 'none',
-},
-});
+
 
 const url_to_render = 'http://127.0.0.1:8000/api/';
 
@@ -42,8 +28,6 @@ class ArticleList extends React.Component {
   }
 
   render(){
-    const { classes } = this.props;
-
     const articles = []
     this.state.articles.forEach(article => {articles.push(article)});
     return (
@@ -106,8 +90,4 @@ class ArticleList extends React.Component {
 }
 
 
-ArticleList.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(ArticleList);
+export default ArticleList;
