@@ -50,6 +50,7 @@ class RegistrationForm extends React.Component {
   componentDidMount() {
     // custom rule will have name 'isPasswordMatch'
     ValidatorForm.addValidationRule('isPasswordMatch', (value) => {
+      console.log('this is mounted');
         if (value !== this.state.user.password) {
             return false;
         }
@@ -148,14 +149,14 @@ class RegistrationForm extends React.Component {
               autoFocus
             />
 
-            <TextField
+            <TextValidator
               autoComplete="current-password"
               variant="outlined"
               margin="normal"
               fullWidth
               id="password"
               label="Password"
-              value = {user.password1}
+              value = {user.password}
               onChange={this.handleChange}
               name="password"
               type="password"
@@ -163,7 +164,7 @@ class RegistrationForm extends React.Component {
               errorMessages={['this field is required']}
             />
 
-            <TextField
+            <TextValidator
               variant="outlined"
               margin="normal"
               fullWidth
