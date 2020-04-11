@@ -63,7 +63,7 @@ export default function Socialmediaicons() {
         onClose={handlePopoverClose}
         disableRestoreFocus
       >
-        <Typography>Let's network!</Typography>
+        <Typography>Want to network?</Typography>
       </Popover>
     </div>
   );

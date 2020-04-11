@@ -7,6 +7,10 @@ import Box from '@material-ui/core/Box';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
@@ -57,7 +61,6 @@ const useStyles = makeStyles((theme) => ({
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    color: '#fff'
   },
   appBarShift: {
     marginLeft: drawerWidth,
@@ -138,6 +141,12 @@ const CustomLayout = (props) => {
   let pageTheme = createMuiTheme({
     palette: {
       type: currentTheme,
+      primary: {
+        main: '#50b2c0',
+      },
+      secondary: {
+        main: '#ff4000',
+      }
     },
   });
 
@@ -165,9 +174,6 @@ const CustomLayout = (props) => {
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
               {pageSub}
           </Typography>
-          <IconButton onClick={handleThemeChange}>
-            <SettingsBrightnessIcon style={{color:"#fff"}}/>
-          </IconButton>
           <Socialmediaicons />
         </Toolbar>
         </AppBar>
@@ -182,9 +188,20 @@ const CustomLayout = (props) => {
             <IconButton onClick={handleDrawerClose}>
               <ChevronLeftIcon />
             </IconButton>
+            <Divider />
           </div>
           <Divider />
-          <List><ListItems {...props}/></List>
+          <List>
+            <ListItems {...props}/>
+            <Divider />
+            <ListSubheader inset>Settings</ListSubheader>
+            <ListItem button onClick={handleThemeChange} >
+              <ListItemIcon>
+              <SettingsBrightnessIcon />
+              </ListItemIcon>
+              <ListItemText primary="Change Theme" />
+            </ListItem>
+          </List>
         </Drawer>
         <main className={classes.content}>
             {

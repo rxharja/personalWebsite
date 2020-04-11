@@ -3,23 +3,33 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/styles';
 import PropTypes from 'prop-types';
+import Paper from '@material-ui/core/Paper';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Link from '@material-ui/core/Link'
-import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import LockOpenOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
 import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import * as actions from '../store/actions/auth';
 
 const styles = (theme) => ({
+  root: {
+    width: '100%',
+  },
+  image: {
+    backgroundImage: 'url(https://source.unsplash.com/random)',
+    backgroundRepeat: 'no-repeat',
+    backgroundColor:
+      theme.palette.type === 'light' ? theme.palette.grey[50] : theme.palette.grey[900],
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  },
   paper: {
-    marginTop: theme.spacing(8),
+    margin: theme.spacing(8, 4),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -29,11 +39,16 @@ const styles = (theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
+    height: "52vh",
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
   },
 });
 
@@ -101,8 +116,10 @@ class RegistrationForm extends React.Component {
     }
 
     return (
-      <Container component="main" maxWidth="xs">
+      <Grid container component="main" className={classes.root}>
         <CssBaseline />
+        <Grid item xs={false} sm={4} md={7} className={classes.image} />
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
         <div className={classes.paper}>
 
           <Avatar className={classes.avatar}>
@@ -110,7 +127,7 @@ class RegistrationForm extends React.Component {
           </Avatar>
 
           <Typography component="h1" variant="h5">
-            Sign in
+            Sign up
           </Typography>
           <ValidatorForm
             ref="form"
@@ -191,19 +208,21 @@ class RegistrationForm extends React.Component {
 
             <Grid container>
               <Grid item>
-                <Link href="/login/" variant="body2">
+                <Link><NavLink to="/login/" variant="body2" style={{color:"inherit",textDecoration:"inherit"}}>
                   {"Already have an account? Log in"}
-                </Link>
+                </NavLink></Link>
               </Grid>
             </Grid>
 
           </ValidatorForm>
       </div>
       {errorMessage}
+    </Grid>
       <Backdrop className={classes.backdrop} open={open} >
         <CircularProgress color="inherit" />
       </Backdrop>
-    </Container>
+
+    </Grid>
     );
   }
 }
@@ -225,4 +244,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(RegistrationForm)));
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(RegistrationForm));

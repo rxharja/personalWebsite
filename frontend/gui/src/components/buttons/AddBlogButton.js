@@ -35,7 +35,7 @@ export default function AddBlogButton() {
 
     <div id="blogbutton">
       <Fab
-        color="primary"
+        color="secondary"
         aria-label="add"
         style={{position:"absolute",bottom:"20px",right:"20px"}}
         aria-owns={open ? 'mouse-over-popover' : undefined}
@@ -63,7 +63,7 @@ export default function AddBlogButton() {
         onClose={handlePopoverClose}
         disableRestoreFocus
       >
-        <Typography>Add a new blog post!</Typography>
+        <Typography>Add a new blog post</Typography>
       </Popover>
     </div>
   );

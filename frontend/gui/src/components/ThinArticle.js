@@ -5,6 +5,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
+import { NavLink } from 'react-router-dom';
 
 const useStyles = makeStyles({
   root: {
@@ -27,7 +28,7 @@ const ThinArticle = (props) => {
 
   return (
     <Card className={classes.root}>
-      <a className={classes.links} href={"articles/"+props.id}><CardActionArea className={classes.actionArea}>
+      <NavLink className={classes.links} to={"/articles/"+props.id}><CardActionArea className={classes.actionArea}>
         <CardMedia
           component="img"
           alt={props.description}
@@ -43,7 +44,7 @@ const ThinArticle = (props) => {
             {props.description}
           </Typography>
         </CardContent>
-      </CardActionArea></a>
+      </CardActionArea></NavLink>
     </Card>
   );
 }

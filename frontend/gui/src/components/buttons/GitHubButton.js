@@ -63,7 +63,7 @@ export default function Socialmediaicons() {
         onClose={handlePopoverClose}
         disableRestoreFocus
       >
-        <Typography>See the latest thing I'm working on!</Typography>
+        <Typography>See the latest thing I'm working on</Typography>
       </Popover>
     </div>
   );

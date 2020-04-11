@@ -9,13 +9,16 @@ const getPage = (history) => {
   }
 
   const switchSubtitle = (title) => {
+    console.log(title)
     switch (title) {
-      case '/articles':
-        return "Latest Musings";
-      case '/login':
-        return "Going to post something cool?"
+      case '/articles/':
+        return "🖥️🧬Let's talk tech";
+      case '/login/':
+        return "👌Sign in to Post something cool"
+      case '/signup/':
+        return "👏Welcome to the family"
       default:
-        return "Copacetic";
+        return "🤙Copacetic";
     }
   }
   const title = getTitle(history.location.pathname)

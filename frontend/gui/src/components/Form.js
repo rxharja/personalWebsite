@@ -75,7 +75,7 @@ class CustomForm extends React.Component {
             required
             fullWidth
           />
-          <Button variant="outlined" color="primary" type="submit" >{this.props.btnText}</Button>
+        <Button style={{float:"left"}} variant="outlined" color="primary" type="submit" >{this.props.btnText}</Button>
         </form>
       </div>
     );
@@ -85,6 +85,7 @@ class CustomForm extends React.Component {
 CustomForm.propTypes = {
   classes: PropTypes.object.isRequired,
 };
+
 
 
 export default withStyles(styles)(CustomForm);

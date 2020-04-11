@@ -3,8 +3,8 @@ import axios from 'axios';
 import CustomForm from '../components/Form';
 import Button from '@material-ui/core/Button';
 import CustomizedSnackbar from '../components/CustomizedSnackbar';
-import Divider from '@material-ui/core/Divider';
 import AddBlogButton from '../components/buttons/AddBlogButton';
+import Typography from '@material-ui/core/Typography';
 
 class ArticleDetail extends React.Component {
 
@@ -43,15 +43,15 @@ class ArticleDetail extends React.Component {
   }
 
   render() {
-
     return (
       <div style={{padding:"0 15% 0 15%"}}>
         <div title={this.state.article.title}>
-          <h1>{this.state.article.title}</h1>
-          <i>Redon Xharja, published: {new Date().getDate()}</i>
-          <Divider />
+          <Typography variant="h2" component="h2">{this.state.article.title}</Typography>
+          <Typography variant="i" component="i">{this.state.article.description}</Typography>
           <br />
-          <p>{this.state.article.description}</p>
+          <Typography variant="i" component="i">Redon Xharja, published: {new Date().getDate()}</Typography>
+
+          <br />
           <div dangerouslySetInnerHTML={{ __html: this.state.article.content }} />
         </div>
         <CustomForm

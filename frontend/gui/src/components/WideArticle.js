@@ -5,6 +5,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import CardActionArea from '@material-ui/core/CardActionArea';
+import { NavLink } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,16 +43,18 @@ const WideArticle = (props) => {
   return (
     <Card className={classes.root}>
         <div className={classes.details}>
-        <a className={classes.links} href={"articles/"+props.id}><CardActionArea>
-          <CardContent className={classes.content}>
-            <Typography color="textPrimary" component="h5" variant="h5">
-              {props.title}
-            </Typography>
-            <Typography variant="subtitle1" color="textSecondary">
-              {props.description}
-            </Typography>
-          </CardContent>
-          </CardActionArea></a>
+        <NavLink className={classes.links} to={"/articles/"+props.id}>
+          <CardActionArea>
+            <CardContent className={classes.content}>
+              <Typography color="textPrimary" component="h5" variant="h5">
+                {props.title}
+              </Typography>
+              <Typography variant="subtitle1" color="textSecondary">
+                {props.description}
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </NavLink>
         </div>
         <CardMedia
           alt={props.description}

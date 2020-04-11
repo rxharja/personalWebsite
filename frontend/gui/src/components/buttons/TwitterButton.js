@@ -62,7 +62,7 @@ export default function Socialmediaicons() {
         onClose={handlePopoverClose}
         disableRestoreFocus
       >
-        <Typography>Keep up to date with my latest tweets!</Typography>
+        <Typography>Peep my tweets</Typography>
       </Popover>
     </div>
   );
