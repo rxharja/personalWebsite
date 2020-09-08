@@ -12,7 +12,7 @@ const getPage = (history) => {
     console.log(title)
     switch (title) {
       case '/articles/':
-        return "🖥️🧬Let's talk tech";
+        return "🖥️🧬Selcouth Solutions";
       case '/login/':
         return "👌Sign in to Post something cool"
       case '/signup/':
