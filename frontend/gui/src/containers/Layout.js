@@ -1,6 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
 import { makeStyles, ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
 import Box from '@material-ui/core/Box';
@@ -108,7 +109,8 @@ const useStyles = makeStyles((theme) => ({
   container: {
     paddingTop: 0,
     paddingBottom: 0,
-    paddingLeft: 0
+    paddingLeft: 0,
+    width: '100%'
   },
   paper: {
     padding: theme.spacing(2),
@@ -178,16 +180,19 @@ const CustomLayout = (props) => {
         </Toolbar>
         </AppBar>
         <Drawer
-          variant="permanent"
+          variant={ useMediaQuery('(max-width:600px)') ? "temporary" : "permanent" }
           classes={{
             paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
           }}
           open={open}
         >
           <div className={classes.toolbarIcon}>
-            <IconButton onClick={handleDrawerClose}>
+            {
+              useMediaQuery('(max-width:600px)') ?
+              <IconButton onClick={handleDrawerClose}>
               <ChevronLeftIcon />
-            </IconButton>
+            </IconButton> : ""
+            }
             <Divider />
           </div>
           <Divider />
@@ -216,7 +221,7 @@ const CustomLayout = (props) => {
                 </Container>
               </div>
             :
-            <Container maxWidth="lg" className={classes.container} style={{padding:0, margin:0}}>
+            <Container maxWidth={false} className={classes.container} style={{padding:0, margin:0}}>
               {props.children}
             </Container>
             }
