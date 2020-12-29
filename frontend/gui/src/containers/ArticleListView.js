@@ -5,7 +5,6 @@ import WideArticle from '../components/WideArticle';
 import ThinArticle from '../components/ThinArticle';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import CustomForm from '../components/Form';
 import AddBlogButton from '../components/buttons/AddBlogButton';
 
 
@@ -15,6 +14,7 @@ class ArticleList extends React.Component {
   state = {
     articles: [],
     anchorEl: null,
+    open: false
   }
 
   componentDidMount() {
@@ -27,9 +27,11 @@ class ArticleList extends React.Component {
     })
   }
 
-  render(){
+  render(props){
     const articles = []
     this.state.articles.forEach(article => {articles.push(article)});
+    console.log("props in articlelistview.js", this.props)
+
     return (
       <div>
         <Grid container spacing={3}>
@@ -68,22 +70,22 @@ class ArticleList extends React.Component {
           <Grid item xs={12} style={{height:"400px"}}>
             <Typography>Additional Posts</Typography>
             <Divider />
-            {this.state.articles.forEach(article => (
-              <div>
-                <img src="https://unsplash.it/150/150" alt=""/>
-                <p>{article.title}</p>
-                <p>{article.content}</p>
-                <p>date created: </p>
-                <p>by:</p>
-              </div>
-            ))}
+            {this.state.articles.length ?
+              this.state.articles.forEach(article => (
+                <div>
+                  <img src="https://unsplash.it/150/150" alt=""/>
+                  <p>{article.title}</p>
+                  <p>{article.content}</p>
+                  <p>date created: </p>
+                  <p>by:</p>
+                </div>
+              ))
+              :
+              <Typography>Nothing to Display! Check back later for more content!</Typography>
+            }
           </Grid>
         </Grid>
         <AddBlogButton />
-        <CustomForm
-          requestMethod="post"
-          articleID={null}
-          btnText="Create" />
       </div>
     );
   }
