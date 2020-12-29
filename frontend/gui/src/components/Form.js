@@ -10,7 +10,7 @@ const styles = theme => ({
   root: {
     display: "flex",
     flexDirection: "column",
-    flexGrow: 1,
+    // flexGrow: 1,
   },
 });
 
@@ -75,7 +75,7 @@ class CustomForm extends React.Component {
             required
             fullWidth
           />
-        <Button style={{float:"left"}} variant="outlined" color="primary" type="submit" >{this.props.btnText}</Button>
+        <Button style={{float:"left"}} variant="outlined" color="primary" type="submit">{this.props.btnText}</Button>
         </form>
       </div>
     );

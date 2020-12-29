@@ -5,6 +5,8 @@ import Button from '@material-ui/core/Button';
 import CustomizedSnackbar from '../components/CustomizedSnackbar';
 import AddBlogButton from '../components/buttons/AddBlogButton';
 import Typography from '@material-ui/core/Typography';
+import { connect } from 'react-redux';
+
 
 class ArticleDetail extends React.Component {
 
@@ -43,6 +45,8 @@ class ArticleDetail extends React.Component {
   }
 
   render() {
+  console.log("in article details view", this.props);
+
     return (
       <div style={{padding:"0 15% 0 15%"}}>
         <div title={this.state.article.title}>
@@ -54,6 +58,8 @@ class ArticleDetail extends React.Component {
           <br />
           <div dangerouslySetInnerHTML={{ __html: this.state.article.content }} />
         </div>
+        {this.props.isAuthenticated ?
+        <div>
         <CustomForm
           {...this.state.article}
           requestMethod="put"
@@ -64,6 +70,9 @@ class ArticleDetail extends React.Component {
         <form onSubmit={this.handleDelete}>
           <Button variant="outlined" color="secondary" type="submit" >Delete</Button>
         </form>
+        </div>
+          : ""}
+
         <CustomizedSnackbar />
         <AddBlogButton />
       </div>
@@ -71,4 +80,10 @@ class ArticleDetail extends React.Component {
   }
 }
 
-export default ArticleDetail
+const mapStateToProps = state => {
+  return {
+    isAuthenticated: state.token !== null
+  }
+}
+
+export default connect(mapStateToProps, null)(ArticleDetail)

@@ -151,7 +151,6 @@ const CustomLayout = (props) => {
       }
     },
   });
-
   const handleThemeChange = () => {
     currentTheme === 'dark' ? setCurrentTheme('light') : setCurrentTheme('dark')
   }
@@ -162,7 +161,7 @@ const CustomLayout = (props) => {
     <ThemeProvider theme={pageTheme}>
       <div className={classes.root}>
         <CssBaseline />
-        <AppBar position="absolute" style={{background: "secondary"}}className={clsx(classes.appBar, open && classes.appBarShift)}>
+        <AppBar position="absolute" style={{background: "secondary"}} className={clsx(classes.appBar, open && classes.appBarShift)}>
         <Toolbar className={classes.toolbar}>
           <IconButton
             edge="start"
