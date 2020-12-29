@@ -44,6 +44,11 @@ class ArticleDetail extends React.Component {
     this.dom.history.push('/');
   }
 
+  convertDate = (isoDate) => {
+    const date = new Date(isoDate);
+    return date.toString();
+  }
+
   render() {
   console.log("in article details view", this.props);
 
@@ -53,7 +58,7 @@ class ArticleDetail extends React.Component {
           <Typography variant="h2" component="h2">{this.state.article.title}</Typography>
           <Typography variant="i" component="i">{this.state.article.description}</Typography>
           <br />
-          <Typography variant="i" component="i">Redon Xharja, published: {new Date().getDate()}</Typography>
+          <Typography variant="i" component="i">Redon Xharja, published: {this.convertDate(this.state.article.created)}</Typography>
 
           <br />
           <div dangerouslySetInnerHTML={{ __html: this.state.article.content }} />
