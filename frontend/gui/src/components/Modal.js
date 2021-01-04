@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ModalForm(props) {
   const classes = useStyles();
-
+  console.log("modal props", props)
   return (
     <div>
       <Modal
@@ -37,7 +37,7 @@ export default function ModalForm(props) {
       >
         <Fade in={props.open}>
           <div className={classes.paper}>
-            <CustomForm />
+            <CustomForm articleID={props.articleID}/>
           </div>
         </Fade>
       </Modal>

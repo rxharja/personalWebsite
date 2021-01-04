@@ -21,8 +21,8 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative'
   },
   paperModal: {
-    width: '50%',
-    height: '50%',
+    width: '80vw',
+    height: '80vh',
     position: 'absolute',
     top: '50%',
     left: '50%',
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function AddBlogButton() {
+export default function AddBlogButton(props) {
   const classes = useStyles();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -66,7 +66,7 @@ export default function AddBlogButton() {
         <Fab
           color="secondary"
           aria-label="add"
-          style={{position:"absolute",bottom:"20px",right:"20px"}}
+          style={{position:"absolute",bottom:"20px",right:"50px"}}
           aria-owns={open ? 'mouse-over-popover' : undefined}
           aria-haspopup="true"
           onMouseEnter={handlePopoverOpen}
@@ -109,7 +109,9 @@ export default function AddBlogButton() {
       >
         <Fade in={openModal}>
           <div className={classes.paperModal}>
-            <CustomForm btnText="Submit"/>
+            <Typography variant="h3">Create a New Article</Typography>
+            <br />
+            <CustomForm btnText="Submit" token={props.token} articleID={props.articleID} />
           </div>
         </Fade>
       </Modal>

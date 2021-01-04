@@ -6,9 +6,9 @@ import ThinArticle from '../components/ThinArticle';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import AddBlogButton from '../components/buttons/AddBlogButton';
+import { connect } from 'react-redux';
 
-
-const url_to_render = 'http://127.0.0.1:8000/api/';
+const url_to_render = 'http://127.0.0.1:8000/api/articles/';
 
 class ArticleList extends React.Component {
   state = {
@@ -25,6 +25,25 @@ class ArticleList extends React.Component {
             articles: res.data
           });
     })
+  }
+
+  renderArticles = articles => {
+    return (
+      <div>
+      {
+        articles.map((article, index) => {
+          return <div key={index}>
+            <img src="https://unsplash.it/150/150" alt="" />
+            <p>{article.title}</p>
+            <p>{article.content}</p>
+            <p>date created: {article.created}</p>
+            <p>by: Redon Xharja</p>
+            <hr />
+          </div>
+        })
+      }
+      </div>
+    )
   }
 
   render(props){
@@ -70,26 +89,24 @@ class ArticleList extends React.Component {
           <Grid item xs={12} style={{height:"400px"}}>
             <Typography>Additional Posts</Typography>
             <Divider />
-            {this.state.articles.length ?
-              this.state.articles.forEach(article => (
-                <div>
-                  <img src="https://unsplash.it/150/150" alt=""/>
-                  <p>{article.title}</p>
-                  <p>{article.content}</p>
-                  <p>date created: </p>
-                  <p>by:</p>
-                </div>
-              ))
+            {articles.length > 0 ?
+              this.renderArticles(articles)
               :
               <Typography>Nothing to Display! Check back later for more content!</Typography>
             }
           </Grid>
         </Grid>
-        <AddBlogButton />
+        {this.props.isAuthenticated ? <AddBlogButton token={this.props.token} articleID={this.state.articles.length + 1}/> : ""}
       </div>
     );
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    isAuthenticated: state.token !== null,
+    token: state.token
+  }
+}
 
-export default ArticleList;
+export default connect(mapStateToProps, null)(ArticleList)

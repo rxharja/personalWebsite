@@ -60,7 +60,7 @@ const ListItems = (props) => {
         <ListItemIcon>
           <RecentActorsIcon />
         </ListItemIcon>
-        <ListItemText primary="Resume" />
+        <ListItemText primary="About Me" />
       </ListItem>
 
       <ListItem button>

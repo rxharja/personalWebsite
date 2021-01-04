@@ -12,7 +12,7 @@ class ArticleDetail extends React.Component {
 
   state = {
     article: {},
-    open: null
+    open: false
   }
 
   componentDidMount() {
@@ -20,7 +20,7 @@ class ArticleDetail extends React.Component {
   }
 
   updateState = () => {
-    const baseURL = 'http://127.0.0.1:8000/api/';
+    const baseURL = 'http://127.0.0.1:8000/api/articles/';
     const articleID = this.props.match.params.articleID;
     const urlToRender = baseURL + articleID;
     axios.get(urlToRender)
@@ -29,19 +29,24 @@ class ArticleDetail extends React.Component {
             article: res.data,
           });
     })
+    console.log("the state", this.state)
   }
 
-  handleDelete = (event) => {
-    const baseURL = 'http://127.0.0.1:8000/api/';
+  handleDelete = (event, token, history) => {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }
+    };
+    console.log(config)
+    const baseURL = 'http://127.0.0.1:8000/api/articles/';
     const articleID = this.props.match.params.articleID;
     const urlToRender = baseURL + articleID;
-    axios.delete(urlToRender)
+    axios.delete(urlToRender, config)
       .then(res => {
           this.setState({
             article: res.data
           });
-    })
-    this.dom.history.push('/');
+      })
+      .then(this.props.history.push("/"))
   }
 
   convertDate = (isoDate) => {
@@ -49,21 +54,43 @@ class ArticleDetail extends React.Component {
     return date.toString();
   }
 
-  render() {
-  console.log("in article details view", this.props);
+  getImg = () => {
+    return this.state.article.image;
+    // let replacedImg = this.state.article.image
+    // return replacedImg.replace("assets", "static")
+  }
 
+  showEditOpts = () => {
+    this.setState({ open: !this.state.open })
+  }
+
+  render() {
+    console.log(this.state);
     return (
       <div style={{padding:"0 15% 0 15%"}}>
         <div title={this.state.article.title}>
           <Typography variant="h2" component="h2">{this.state.article.title}</Typography>
-          <Typography variant="i" component="i">{this.state.article.description}</Typography>
+          <Typography variant="subtitle1" component="i">{this.state.article.description}</Typography>
           <br />
-          <Typography variant="i" component="i">Redon Xharja, published: {this.convertDate(this.state.article.created)}</Typography>
-
+          <Typography variant="subtitle2" component="i">Redon Xharja, published: {this.convertDate(this.state.article.created)}</Typography>
+          <br />
+          {/* <img src={this.getImg()} alt="" style={{width:"100%"}} /> */}
+          <Typography>{this.getImg()}</Typography>
           <br />
           <div dangerouslySetInnerHTML={{ __html: this.state.article.content }} />
         </div>
         {this.props.isAuthenticated ?
+        <div>
+          <Button 
+          variant="contained" 
+          onClick={this.showEditOpts}>
+            {this.state.open? "Hide Edit Options" : "Edit Article"}
+          </Button>
+          <AddBlogButton />
+        </div>
+        : 
+        ""}
+        {this.state.open ?
         <div>
         <CustomForm
           {...this.state.article}
@@ -71,15 +98,15 @@ class ArticleDetail extends React.Component {
           articleTitle={this.state.article.title}
           articleContent={this.state.article.content}
           articleID={this.props.match.params.articleID}
+          token={this.props.token}
           btnText="Update" />
-        <form onSubmit={this.handleDelete}>
-          <Button variant="outlined" color="secondary" type="submit" >Delete</Button>
+        <form onSubmit={(event) => this.handleDelete(event, this.props.token)}>
+              <Button variant="outlined" color="secondary" type="submit">Delete</Button>
         </form>
         </div>
           : ""}
 
         <CustomizedSnackbar />
-        <AddBlogButton />
       </div>
     );
   }
@@ -87,7 +114,8 @@ class ArticleDetail extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    isAuthenticated: state.token !== null
+    isAuthenticated: state.token !== null,
+    token: state.token
   }
 }
 

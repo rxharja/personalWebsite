@@ -12,6 +12,8 @@ const BaseRouter = () => (
     <Route exact path='/' component={Home} />{" "}
     <Route exact path='/articles/' component={ArticleList} />{" "}
     <Route exact path='/articles/:articleID/' component={ArticleDetail} />{" "}
+    {/* <Route exact path='/about/' component={About} />{" "}
+    <Route exact path='/projects/' component={Projects} />{" "} */}
     <Route exact path='/login/' component={Login} />{" "}
     <Route exact path='/signup/' component={Signup} />{" "}
   </div>

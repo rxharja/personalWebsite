@@ -39,8 +39,8 @@ const checkAuthTimeout = expirationTime => {
 
 export const authLogin = (username, password) => {
   return dispatch => {
-    const urlToRender = 'http://127.0.0.1:8000/';
-    const authLog = 'rest-auth/login/';
+    const urlToRender = 'http://127.0.0.1:8000/api/';
+    const authLog = 'auth/login/';
     const toPost = urlToRender + authLog;
     dispatch(authStart());
     axios.post(toPost, {
@@ -48,7 +48,7 @@ export const authLogin = (username, password) => {
       password: password
     })
     .then(res => {
-      const token = res.data.key;
+      const token = res.data.data;
       const expirationDate = new Date(new Date().getTime()+3600*1000);
       localStorage.setItem('token', token);
       localStorage.setItem('expirationDate', expirationDate);
@@ -63,20 +63,18 @@ export const authLogin = (username, password) => {
 }
 
 export const authSignup = (username, email, password1, password2) => {
-  console.log("username",username,"email",email,"password1",password1,"password2",password2);
   return dispatch => {
-    const urlToRender = 'http://127.0.0.1:8000/';
-    const authLog = 'rest-auth/registration/';
+    const urlToRender = 'http://127.0.0.1:8000/api/';
+    const authLog = 'auth/register/';
     const toPost = urlToRender + authLog;
     dispatch(authStart());
     axios.post(toPost, {
       username: username,
       email: email,
-      password1: password1,
-      password2: password2
+      password: password1,
     })
     .then(res => {
-      const token = res.data.key;
+      const token = res.data.data;
       const expirationDate = new Date(new Date().getTime()+3600*1000);
       localStorage.setItem('token', token);
       localStorage.setItem('expirationDate', expirationDate);
