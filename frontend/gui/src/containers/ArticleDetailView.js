@@ -77,6 +77,7 @@ class ArticleDetail extends React.Component {
           {/* <img src={this.getImg()} alt="" style={{width:"100%"}} /> */}
           <Typography>{this.getImg()}</Typography>
           <br />
+          {/* this dangerouslySet call cannot go into production it is a recipe for disaster lol */}
           <div dangerouslySetInnerHTML={{ __html: this.state.article.content }} />
         </div>
         {this.props.isAuthenticated ?
