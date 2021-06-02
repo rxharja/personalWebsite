@@ -1,9 +1,7 @@
 import {PtsCanvas } from 'react-pts-canvas'
 import { Create, Group, Line } from 'pts/dist/es5'
 
-
 class CanvasComponent extends PtsCanvas {
-
 
     constructor() {
       super();
