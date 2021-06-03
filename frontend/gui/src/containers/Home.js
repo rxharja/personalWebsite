@@ -13,7 +13,7 @@ class Home extends React.Component {
         <div className="title">
           <Typography align="center" variant="h1">Redon Xharja</Typography>
           <Fade in="true" timeout={{ enter: 1000, exit: 1000}} >
-            <Typography align="center" variant="h4">Bioinformatics, Machine Learning, Software Engineering</Typography>
+            <Typography align="center" variant="h4">Hi, I like coding</Typography>
           </Fade>
         </div>
         <div className="leftExample">
